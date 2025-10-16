@@ -36,9 +36,6 @@
     <button class="btn mt" data-js="reset">戻る</button>
   `;
 
-  const POKEMON_API = id => `https://pokeapi.co/api/v2/pokemon/${id}`;
-  const BALL_API = 'https://pokeapi.co/api/v2/item/4';
-
     function render(html) {
       $('#wrapper').html(html);
     }
@@ -50,7 +47,7 @@
     $(document).on('click', '#pokemon_search', function () {
       const id = Math.floor(Math.random() * 151) + 1;
       $.ajax({
-        url: POKEMON_API(id),
+        url: `https://pokeapi.co/api/v2/pokemon/${id}`,
         method: 'GET',
         dataType: 'json'
       }).done(function (pokemon) {
@@ -80,7 +77,7 @@
       if (success) {
         render(doneHtml);
         $.ajax({
-          url: BALL_API,
+          url: 'https://pokeapi.co/api/v2/item/4',
           method: 'GET',
           dataType: 'json'
         }).done(function (item) {
