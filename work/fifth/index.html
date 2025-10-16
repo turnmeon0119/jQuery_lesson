@@ -84,6 +84,29 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+    $(function () {
+      function filterList() {
+        const selected = $('.select').val();
+
+        $('.list li').hide();
+
+        if (selected === 'all') {
+          $('.list li').show();
+          return;
+        }
+
+        $('.list li').each(function () {
+          const type = $(this).data('category-type');
+          if (type === selected) {
+            $(this).show();
+        }
+      });
+    }
+
+    $('.select').on('change', filterList);
+
+      filterList();
+    });
       // 今回やるのはフィルタリング機能です。
       // selectボックスをクリックして言語を選び、その言語と関係のあるリストだけが表示されるプログラムです。
       // [処理の流れ]
