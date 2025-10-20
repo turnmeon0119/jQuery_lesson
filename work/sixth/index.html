@@ -15,7 +15,77 @@
   </div>
   <script src="../../common/js/jquery.js"></script>
   <script>
-    // 回答はここに書いてね
+    const searchHtml = `
+      <button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>
+    `;
+    const encountHtml = `
+      <p class="name"></p>
+      <div><img class="img" src="" alt=""></div>
+      <div>
+        <button class="btn" id="catch">捕まえる</button>
+        <button class="btn" data-js="reset">逃げる</button>
+      </div>
+    `;
+    const doneHtml = `
+      <p class="name">ゲットしました</p>
+      <div><img class="img" src="" alt=""></div>
+      <button class="btn" data-js="reset">戻る</button>
+    `;
+    const failHtml = `
+      <p class="text">逃げられてしまった...</p>
+      <button class="btn mt" data-js="reset">戻る</button>
+    `;
+
+      function render(html) {
+        $('#wrapper').html(html);
+      }
+
+      $(function () {
+        render(searchHtml);
+      });
+
+      $(document).on('click', '#pokemon_search', function () {
+        const id = Math.floor(Math.random() * 151) + 1;
+        $.ajax({
+          url: `https://pokeapi.co/api/v2/pokemon/${id}`,
+          method: 'GET',
+          dataType: 'json'
+        }).done(function (pokemon) {
+          render(encountHtml);
+          const sprite = pokemon.sprites.front_default || '';
+          $('.img').attr('src', sprite).attr('alt', pokemon.name);
+
+          $.ajax({
+            url: pokemon.species.url,
+            method: 'GET',
+            dataType: 'json'
+          }).done(function (species) {
+            const jp = species.names.find(n => n.language.name === 'ja');
+            const jpName = jp ? jp.name : pokemon.name;
+            $('.name').text(jpName);
+          });
+        });
+      });
+
+      $(document).on('click', '#catch', function () {
+        if (Math.random() < 0.5) {
+          render(doneHtml);
+          $.ajax({
+            url: 'https://pokeapi.co/api/v2/item/4',
+            method: 'GET',
+            dataType: 'json'
+          }).done(function (item) {
+            const ball = item.sprites && item.sprites.default ? item.sprites.default : '';
+            $('.img').attr('src', ball).attr('alt', 'Poké Ball');
+          });
+        } else {
+          render(failHtml);
+        }
+      });
+
+      $(document).on('click', '[data-js="reset"]', function () {
+        render(searchHtml);
+      });
   </script>
 </body>
 </html>
