@@ -99,13 +99,13 @@
           const type = $(this).data('category-type');
           if (type === selected) {
             $(this).show();
-        }
-      });
-    }
+          }
+        });
+      }
 
-    $('.select').on('change', filterList);
+      $('.select').on('change', filterList);
 
-      filterList();
+      // filterList();
     });
       // 今回やるのはフィルタリング機能です。
       // selectボックスをクリックして言語を選び、その言語と関係のあるリストだけが表示されるプログラムです。
